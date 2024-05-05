@@ -73,7 +73,6 @@ export const Settings = () => {
       <CardHeader className="text-center">
         <CardTitle>⛭ Settings</CardTitle>
         <CardDescription>Update your information</CardDescription>
-        <Link href="/dashboard">Dahsboard</Link>
       </CardHeader>
       <CardContent>
         <h2 className="text-2xl font-bold">Your Name: {session?.name}</h2>

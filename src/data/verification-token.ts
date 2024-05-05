@@ -1,8 +1,8 @@
-import { prismaDb } from "@/lib/prismaDb";
+import { db } from "@/lib/prismaDb";
 
 export const getVerificationTokenById = async (token: string) => {
   try {
-    const vericicationToken = await prismaDb.verificationToken.findUnique({
+    const vericicationToken = await db.verificationToken.findUnique({
       where: {
         token,
       },
@@ -15,7 +15,7 @@ export const getVerificationTokenById = async (token: string) => {
 
 export const getVerificationTokenByEmail = async (email: string) => {
   try {
-    const vericicationToken = await prismaDb.verificationToken.findFirst({
+    const vericicationToken = await db.verificationToken.findFirst({
       where: {
         email,
       },

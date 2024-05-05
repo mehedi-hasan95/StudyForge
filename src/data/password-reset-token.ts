@@ -1,8 +1,8 @@
-import { prismaDb } from "@/lib/prismaDb";
+import { db } from "@/lib/prismaDb";
 
 export const getPasswordResetByToken = async (token: string) => {
   try {
-    const vericicationToken = await prismaDb.passwordResetToken.findUnique({
+    const vericicationToken = await db.passwordResetToken.findUnique({
       where: {
         token,
       },
@@ -15,7 +15,7 @@ export const getPasswordResetByToken = async (token: string) => {
 
 export const getPasswordResetByEmail = async (email: string) => {
   try {
-    const vericicationToken = await prismaDb.passwordResetToken.findFirst({
+    const vericicationToken = await db.passwordResetToken.findFirst({
       where: {
         email,
       },

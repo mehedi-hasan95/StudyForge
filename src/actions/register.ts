@@ -2,7 +2,7 @@
 import { RegisterSchema } from "@/schema";
 import * as z from "zod";
 import bcrypt from "bcryptjs";
-import { prismaDb } from "@/lib/prismaDb";
+import { db } from "@/lib/prismaDb";
 import { getUserByEmail } from "@/data/userInfo";
 import { generateVerifyToken } from "@/lib/generate-token";
 import { sendVerificationEmail } from "@/lib/mail";
@@ -22,7 +22,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     return { error: "Email already exist" };
   }
 
-  await prismaDb.user.create({
+  await db.user.create({
     data: {
       name,
       email,

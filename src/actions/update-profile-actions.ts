@@ -1,7 +1,7 @@
 "use server";
 import { getUserById } from "@/data/userInfo";
 import { CurrentUser } from "@/lib/current-user";
-import { prismaDb } from "@/lib/prismaDb";
+import { db } from "@/lib/prismaDb";
 import { UpdateProfileSchema } from "@/schema";
 import * as z from "zod";
 
@@ -19,7 +19,7 @@ export const UpdateProfileActions = async (
     (values.newPassword = undefined), (values.password = undefined);
   }
 
-  const existingUser = await getUserById(currentUser.id);
+  const existingUser = await getUserById(currentUser.id as string);
   if (!existingUser) {
     return { error: "Unauthorize user" };
   }
@@ -39,7 +39,7 @@ export const UpdateProfileActions = async (
     values.password = hashedPassword;
     values.newPassword = undefined;
   }
-  const updatedUser = await prismaDb.user.update({
+  const updatedUser = await db.user.update({
     where: {
       id: existingUser.id,
     },
