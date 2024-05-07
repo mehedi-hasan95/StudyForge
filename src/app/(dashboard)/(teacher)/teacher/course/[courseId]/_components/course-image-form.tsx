@@ -3,7 +3,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import { Pencil, TextSelect } from "lucide-react";
+import { ImageIcon, Pencil, PlusCircle } from "lucide-react";
 import { useState, useTransition } from "react";
 import { CourseSchema } from "@/schema/teacher/course-schema";
 import {
@@ -21,6 +21,8 @@ import { IconBadge } from "@/components/custom/icon-badge";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import { Course } from "@prisma/client";
+import { FileUpload } from "@/lib/file-upload";
+import Image from "next/image";
 
 interface Props {
   initialData: Course;
@@ -56,55 +58,49 @@ export const CourseImageForm = ({ initialData }: Props) => {
     <div>
       <div className="flex justify-between items-center pb-2">
         <div className="flex items-center gap-x-2">
-          <IconBadge icon={TextSelect} size={"sm"} />{" "}
-          <h4 className="text-md font-semibold">Course Description</h4>
+          <IconBadge icon={ImageIcon} size={"sm"} />{" "}
+          <h4 className="text-md font-semibold">Course Image</h4>
         </div>
         <Button onClick={toggleEdit} variant={"ghost"}>
-          {isEditing ? (
-            "Cancle"
-          ) : (
+          {isEditing && "Cancle"}{" "}
+          {!isEditing && initialData?.imageUrl && (
             <>
               <Pencil className="mr-2 h-4 w-4" />
-              Edit Description
+              Edit Image
+            </>
+          )}
+          {!isEditing && !initialData?.imageUrl && (
+            <>
+              <PlusCircle className="mr-2 h-4 w-4" />
+              Add Image
             </>
           )}
         </Button>
       </div>
-      {isEditing ? (
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Textarea
-                      disabled={isPending}
-                      placeholder="e.g. Web Development"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+      {!isEditing &&
+        (!initialData?.imageUrl ? (
+          <div className="flex justify-center items-center h-60 bg-slate-300">
+            <ImageIcon className="h-10 w-10" />
+          </div>
+        ) : (
+          <div className="aspect-video relative">
+            <Image
+              src={initialData.imageUrl}
+              alt=""
+              className="object-cover"
+              fill
             />
-            {isPending ? (
-              <DisableButton label="Updating" />
-            ) : (
-              <Button type="submit">Update</Button>
-            )}
-          </form>
-        </Form>
-      ) : (
-        <p
-          className={cn(
-            "text-sm text-slate-700",
-            !initialData.description && "italic text-slate-500"
-          )}
-        >
-          {initialData.description || "No Description"}
-        </p>
+          </div>
+        ))}
+      {isEditing && (
+        <FileUpload
+          endPoint="courseImage"
+          onChange={(url) => {
+            if (url) {
+              onSubmit({ imageUrl: url });
+            }
+          }}
+        />
       )}
     </div>
   );
