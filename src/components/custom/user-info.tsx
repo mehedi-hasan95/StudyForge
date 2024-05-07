@@ -1,5 +1,5 @@
 "use client";
-import { LogOut, Settings, User, User2 } from "lucide-react";
+import { LogOut, Settings, User2 } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -35,10 +35,6 @@ export const UserInfo = () => {
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem className="cursor-pointer">
-                <User className="mr-2 h-4 w-4" />
-                <span>Profile</span>
-              </DropdownMenuItem>
               <Link href="/dashboard/settings">
                 <DropdownMenuItem className="cursor-pointer">
                   <Settings className="mr-2 h-4 w-4" />
