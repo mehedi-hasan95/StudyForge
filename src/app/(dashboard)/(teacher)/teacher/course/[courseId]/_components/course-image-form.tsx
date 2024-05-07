@@ -3,7 +3,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import { ALargeSmall, Pencil } from "lucide-react";
+import { Pencil, TextSelect } from "lucide-react";
 import { useState, useTransition } from "react";
 import { CourseSchema } from "@/schema/teacher/course-schema";
 import {
@@ -13,20 +13,19 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { CourseEditAction } from "@/actions/teacher/course-action";
 import { toast } from "sonner";
 import { DisableButton } from "@/components/custom/disable-button";
 import { IconBadge } from "@/components/custom/icon-badge";
+import { cn } from "@/lib/utils";
+import { Textarea } from "@/components/ui/textarea";
+import { Course } from "@prisma/client";
 
 interface Props {
-  initialData: {
-    id: string;
-    title: string;
-  };
+  initialData: Course;
 }
-export const CourseTitleForm = ({ initialData }: Props) => {
+export const CourseImageForm = ({ initialData }: Props) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -35,7 +34,7 @@ export const CourseTitleForm = ({ initialData }: Props) => {
   const form = useForm<z.infer<typeof CourseSchema>>({
     resolver: zodResolver(CourseSchema),
     defaultValues: {
-      title: initialData.title,
+      description: initialData?.description || "",
     },
   });
 
@@ -46,7 +45,7 @@ export const CourseTitleForm = ({ initialData }: Props) => {
         if (data.success) {
           router.refresh();
           setIsEditing(false);
-          toast.success("Course Title Updated");
+          toast.success("Course Description Updated");
         } else {
           toast.error(data.error);
         }
@@ -57,8 +56,8 @@ export const CourseTitleForm = ({ initialData }: Props) => {
     <div>
       <div className="flex justify-between items-center pb-2">
         <div className="flex items-center gap-x-2">
-          <IconBadge icon={ALargeSmall} size={"sm"} />{" "}
-          <h4 className="text-md font-semibold">Course Title</h4>
+          <IconBadge icon={TextSelect} size={"sm"} />{" "}
+          <h4 className="text-md font-semibold">Course Description</h4>
         </div>
         <Button onClick={toggleEdit} variant={"ghost"}>
           {isEditing ? (
@@ -66,7 +65,7 @@ export const CourseTitleForm = ({ initialData }: Props) => {
           ) : (
             <>
               <Pencil className="mr-2 h-4 w-4" />
-              Edit Title
+              Edit Description
             </>
           )}
         </Button>
@@ -76,11 +75,11 @@ export const CourseTitleForm = ({ initialData }: Props) => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
-              name="title"
+              name="description"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
+                    <Textarea
                       disabled={isPending}
                       placeholder="e.g. Web Development"
                       {...field}
@@ -98,7 +97,14 @@ export const CourseTitleForm = ({ initialData }: Props) => {
           </form>
         </Form>
       ) : (
-        <p>{initialData.title}</p>
+        <p
+          className={cn(
+            "text-sm text-slate-700",
+            !initialData.description && "italic text-slate-500"
+          )}
+        >
+          {initialData.description || "No Description"}
+        </p>
       )}
     </div>
   );

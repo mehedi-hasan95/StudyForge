@@ -4,6 +4,13 @@ export const CourseTitleSchema = z.object({
   title: z.string({
     message: "Course name is required",
   }),
+});
+export const CourseSchema = z.object({
+  title: z
+    .string({
+      message: "Course name is required",
+    })
+    .optional(),
   description: z
     .string({
       message: "Description is required",

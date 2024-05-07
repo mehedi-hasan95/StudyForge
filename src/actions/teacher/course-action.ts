@@ -1,7 +1,10 @@
 "use server";
 import { CurrentUser, CurrentUserRole } from "@/lib/current-user";
 import { db } from "@/lib/prismaDb";
-import { CourseTitleSchema } from "@/schema/teacher/course-schema";
+import {
+  CourseSchema,
+  CourseTitleSchema,
+} from "@/schema/teacher/course-schema";
 import * as z from "zod";
 
 export const CreateCourseTitleAction = async (
@@ -17,15 +20,10 @@ export const CreateCourseTitleAction = async (
     if (!validateFields.success) {
       return { error: "Invalid email" };
     }
-    const { title, categoryId, description, imageUrl, price } =
-      validateFields.data;
+    const { title } = validateFields.data;
     const createdCourse = db.course.create({
       data: {
         title,
-        categoryId,
-        description,
-        imageUrl,
-        price,
         userId: currentUser?.id as string,
       },
     });
@@ -39,21 +37,23 @@ export const CreateCourseTitleAction = async (
 };
 
 export const CourseEditAction = async (
-  values: z.infer<typeof CourseTitleSchema>,
+  values: z.infer<typeof CourseSchema>,
   id: string
 ) => {
   try {
+    const currentUser = await CurrentUser();
     const userRole = await CurrentUserRole();
     if (userRole !== "TEACHER") {
       return { error: "Unauthorize user" };
     }
-    const validateFields = CourseTitleSchema.safeParse(values);
+    const validateFields = CourseSchema.safeParse(values);
     if (!validateFields.success) {
       return { error: "Invalid email" };
     }
     await db.course.update({
       where: {
         id,
+        userId: currentUser?.id,
       },
       data: {
         ...values,

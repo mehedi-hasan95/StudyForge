@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { CourseTitleSchema } from "@/schema/teacher/course-schema";
+
 const CreateCourse = () => {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();

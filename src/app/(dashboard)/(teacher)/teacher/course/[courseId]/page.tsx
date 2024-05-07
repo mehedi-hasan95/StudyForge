@@ -4,6 +4,8 @@ import { db } from "@/lib/prismaDb";
 import { LayoutDashboard, Pencil } from "lucide-react";
 import { redirect } from "next/navigation";
 import { CourseTitleForm } from "./_components/course-title-form";
+import { CourseDescriptionForm } from "./_components/course-description-form";
+import { CourseImageForm } from "./_components/course-image-form";
 
 const CourseId = async ({ params }: { params: { courseId: string } }) => {
   const currentUser = await CurrentUser();
@@ -42,8 +44,16 @@ const CourseId = async ({ params }: { params: { courseId: string } }) => {
             <IconBadge icon={LayoutDashboard} />
             <h2 className="font-[500]">Customize your Course</h2>
           </div>
-          <div className="mt-5 p-5 bg-slate-200">
-            <CourseTitleForm initialData={course} />
+          <div>
+            <div className="mt-5 p-5 bg-slate-200">
+              <CourseTitleForm initialData={course} />
+            </div>
+            <div className="mt-5 p-5 bg-slate-200">
+              <CourseDescriptionForm initialData={course} />
+            </div>
+            <div className="mt-5 p-5 bg-slate-200">
+              <CourseImageForm initialData={course} />
+            </div>
           </div>
         </div>
       </div>
