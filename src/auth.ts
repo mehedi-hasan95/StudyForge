@@ -35,7 +35,7 @@ export const {
       }
 
       // Prevent unverifide credentials user
-      const existingUser = await getUserById(user.id);
+      const existingUser = await getUserById(user?.id as string);
       if (!existingUser?.emailVerified) {
         return false;
       }

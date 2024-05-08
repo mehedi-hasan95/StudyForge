@@ -6,20 +6,10 @@ import { Button } from "@/components/ui/button";
 import { ImageIcon, Pencil, PlusCircle } from "lucide-react";
 import { useState, useTransition } from "react";
 import { CourseSchema } from "@/schema/teacher/course-schema";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
 import { useRouter } from "next/navigation";
 import { CourseEditAction } from "@/actions/teacher/course-action";
 import { toast } from "sonner";
-import { DisableButton } from "@/components/custom/disable-button";
 import { IconBadge } from "@/components/custom/icon-badge";
-import { cn } from "@/lib/utils";
-import { Textarea } from "@/components/ui/textarea";
 import { Course } from "@prisma/client";
 import { FileUpload } from "@/lib/file-upload";
 import Image from "next/image";

@@ -1,11 +1,12 @@
 import { IconBadge } from "@/components/custom/icon-badge";
 import { CurrentUser } from "@/lib/current-user";
 import { db } from "@/lib/prismaDb";
-import { LayoutDashboard, Pencil } from "lucide-react";
+import { LayoutDashboard } from "lucide-react";
 import { redirect } from "next/navigation";
 import { CourseTitleForm } from "./_components/course-title-form";
 import { CourseDescriptionForm } from "./_components/course-description-form";
 import { CourseImageForm } from "./_components/course-image-form";
+import { CourseCategoryForm } from "./_components/course-category-form";
 
 const CourseId = async ({ params }: { params: { courseId: string } }) => {
   const currentUser = await CurrentUser();
@@ -20,6 +21,11 @@ const CourseId = async ({ params }: { params: { courseId: string } }) => {
   if (!course) {
     return redirect("/");
   }
+  const courseCategory = await db.category.findMany({
+    orderBy: {
+      title: "asc",
+    },
+  });
   const requiredFields = [
     course.title,
     course.description,
@@ -53,6 +59,15 @@ const CourseId = async ({ params }: { params: { courseId: string } }) => {
             </div>
             <div className="mt-5 p-5 bg-slate-200">
               <CourseImageForm initialData={course} />
+            </div>
+            <div className="mt-5 p-5 bg-slate-200">
+              <CourseCategoryForm
+                initialData={course}
+                optoins={courseCategory.map((cat) => ({
+                  label: cat.title,
+                  value: cat.id,
+                }))}
+              />
             </div>
           </div>
         </div>
