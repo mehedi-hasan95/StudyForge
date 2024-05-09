@@ -32,3 +32,9 @@ export const CourseSchema = z.object({
     })
     .optional(),
 });
+
+export const CourseAttachmentSchema = z.object({
+  url: z.string({
+    message: "Course Attachemt is required",
+  }),
+});
