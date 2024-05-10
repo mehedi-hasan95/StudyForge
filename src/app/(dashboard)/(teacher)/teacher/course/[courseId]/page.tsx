@@ -9,6 +9,7 @@ import { CourseImageForm } from "./_components/course-image-form";
 import { CourseCategoryForm } from "./_components/course-category-form";
 import { CoursePriceForm } from "./_components/course-price-form";
 import { CourseAttachmentsForm } from "./_components/course-attachments-form";
+import { CourseChapterForm } from "./_components/course-chapter-form";
 
 const CourseId = async ({ params }: { params: { courseId: string } }) => {
   const currentUser = await CurrentUser();
@@ -23,6 +24,11 @@ const CourseId = async ({ params }: { params: { courseId: string } }) => {
       attachment: {
         orderBy: {
           createdAt: "desc",
+        },
+      },
+      chapter: {
+        orderBy: {
+          position: "asc",
         },
       },
     },
@@ -41,6 +47,7 @@ const CourseId = async ({ params }: { params: { courseId: string } }) => {
     course.imageUrl,
     course.categoryId,
     course.price,
+    course.chapter.some((item) => item.isPublished),
   ];
   const totalFields = requiredFields.length;
   const compleatedFields = requiredFields.filter(Boolean).length;
@@ -89,7 +96,9 @@ const CourseId = async ({ params }: { params: { courseId: string } }) => {
             <IconBadge icon={BookOpen} />
             <h2 className="font-[500]">Course Chapter & Attachments</h2>
           </div>
-          <div className="p-5 bg-slate-200">todo: Chapter</div>
+          <div className="p-5 bg-slate-200">
+            <CourseChapterForm initialData={course} />
+          </div>
           <div className="p-5 bg-slate-200">
             <CourseAttachmentsForm initialData={course} />
           </div>

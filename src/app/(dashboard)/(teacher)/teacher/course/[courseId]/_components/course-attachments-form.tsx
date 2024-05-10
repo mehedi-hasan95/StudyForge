@@ -79,14 +79,16 @@ export const CourseAttachmentsForm = ({ initialData }: Props) => {
           {isEditing ? (
             "Cancle"
           ) : (
-            <>
-              <Pencil className="mr-2 h-4 w-4" />
+            <p className="flex gap-2 items-center">
+              <Pencil className="h-4 w-4" />
               Edit Attachments
-            </>
+            </p>
           )}
         </Button>
       </div>
-      {!isEditing && initialData?.attachment?.length === 0 && "No Attachments"}
+      {!isEditing && !initialData?.attachment?.length && (
+        <p className="text-slate-500 text-sm italic">No Attachments</p>
+      )}
       {!isEditing && initialData?.attachment?.length > 0 && (
         <div className="space-y-2">
           {initialData?.attachment.map((item) => (

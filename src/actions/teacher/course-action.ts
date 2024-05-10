@@ -19,7 +19,7 @@ export const CreateCourseTitleAction = async (
     }
     const validateFields = CourseTitleSchema.safeParse(values);
     if (!validateFields.success) {
-      return { error: "Invalid email" };
+      return { error: "Something went wrong" };
     }
     const { title } = validateFields.data;
     const createdCourse = db.course.create({

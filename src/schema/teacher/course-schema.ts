@@ -38,3 +38,10 @@ export const CourseAttachmentSchema = z.object({
     message: "Course Attachemt is required",
   }),
 });
+
+// Chapter
+export const CourseChapterSchema = z.object({
+  title: z.string({
+    message: "Course Chapter required",
+  }),
+});
