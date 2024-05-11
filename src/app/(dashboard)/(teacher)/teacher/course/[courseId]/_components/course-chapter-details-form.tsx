@@ -39,14 +39,14 @@ export const CourseChapterDetailsForm = ({
     if (!result.destination) result;
     const items = Array.from(chapters);
     const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination?.index as any, 0, reorderedItem);
+    items.splice(result.destination?.index as number, 0, reorderedItem);
     const startIndex = Math.min(
       result.source.index,
-      result.destination?.index as any
+      result.destination?.index as number
     );
     const endIndex = Math.max(
       result.source.index,
-      result.destination?.index as any
+      result.destination?.index as number
     );
     const updatedChapters = items.slice(startIndex, endIndex + 1);
 

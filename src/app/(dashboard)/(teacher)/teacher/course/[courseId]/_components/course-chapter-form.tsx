@@ -57,7 +57,7 @@ export const CourseChapterForm = ({ initialData }: Props) => {
     });
   }
 
-  const onReorder = async (updatedData: { id: string; position: string }[]) => {
+  const onReorder = async (updatedData: { id: string; position: number }[]) => {
     startTransition(() => {
       CreateChapterUpdateAction(updatedData, initialData.id).then((data) => {
         if (data.success) {
@@ -69,6 +69,9 @@ export const CourseChapterForm = ({ initialData }: Props) => {
         }
       });
     });
+  };
+  const onEdit = (id: string) => {
+    router.push(`/teacher/course/${initialData.id}/${id}`);
   };
   return (
     <div className="relative">
@@ -124,8 +127,8 @@ export const CourseChapterForm = ({ initialData }: Props) => {
           {initialData.chapter.length ? (
             <CourseChapterDetailsForm
               items={initialData.chapter || []}
-              onEdit={() => {}}
-              onReorder={onReorder as any}
+              onEdit={onEdit}
+              onReorder={onReorder}
             />
           ) : (
             <p className="text-sm text-slate-500 italic">No Chapter</p>

@@ -45,3 +45,26 @@ export const CourseChapterSchema = z.object({
     message: "Course Chapter required",
   }),
 });
+
+export const ChapterSchema = z.object({
+  title: z
+    .string({
+      message: "Chapter title required",
+    })
+    .optional(),
+  description: z
+    .string({
+      message: "Chapter description required",
+    })
+    .optional(),
+  videoUrl: z
+    .string({
+      message: "Chapter video required",
+    })
+    .optional(),
+  isFree: z
+    .boolean({
+      message: "Make it free or paid",
+    })
+    .optional(),
+});

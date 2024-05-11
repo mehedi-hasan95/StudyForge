@@ -2,7 +2,10 @@
 
 import { CurrentUser, CurrentUserRole } from "@/lib/current-user";
 import { db } from "@/lib/prismaDb";
-import { CourseChapterSchema } from "@/schema/teacher/course-schema";
+import {
+  ChapterSchema,
+  CourseChapterSchema,
+} from "@/schema/teacher/course-schema";
 import * as z from "zod";
 
 export const CreateChapterAction = async (
@@ -52,7 +55,7 @@ export const CreateChapterAction = async (
 };
 
 export const CreateChapterUpdateAction = async (
-  values: { id: string; position: string }[],
+  values: { id: string; position: number }[],
   id: string
 ) => {
   try {
@@ -73,9 +76,45 @@ export const CreateChapterUpdateAction = async (
     for (let item of values) {
       await db.chapter.update({
         where: { id: item.id },
-        data: { position: item.position as any },
+        data: { position: item.position },
       });
     }
+    return { success: "Chapter reorder successfully" };
+  } catch (error) {
+    return { error: "Something went wrong" };
+  }
+};
+
+// Update chapter
+export const UpdateChapterUpdateAction = async (
+  values: z.infer<typeof ChapterSchema>,
+  id: string,
+  courseId: string
+) => {
+  try {
+    const currentUser = await CurrentUser();
+    const userRole = await CurrentUserRole();
+    if (userRole !== "TEACHER") {
+      return { error: "Unauthorize user" };
+    }
+    const ownerCourse = await db.course.findUnique({
+      where: {
+        id: courseId,
+        userId: currentUser?.id,
+      },
+    });
+    if (!ownerCourse) {
+      return { error: "Unauthorize user 2" };
+    }
+    await db.chapter.update({
+      where: {
+        id,
+        courseId: courseId,
+      },
+      data: {
+        ...values,
+      },
+    });
     return { success: "Chapter update successfully" };
   } catch (error) {
     return { error: "Something went wrong" };
