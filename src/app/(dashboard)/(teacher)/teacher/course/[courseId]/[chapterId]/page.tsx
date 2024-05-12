@@ -1,10 +1,12 @@
 import { IconBadge } from "@/components/custom/icon-badge";
 import { CurrentUser, CurrentUserRole } from "@/lib/current-user";
 import { db } from "@/lib/prismaDb";
-import { LayoutDashboard } from "lucide-react";
+import { LayoutDashboard, Video } from "lucide-react";
 import { redirect } from "next/navigation";
 import { ChapterTitleForm } from "./_components/chapter-title-form";
 import { ChapterDescriptionForm } from "./_components/chapter-description-form";
+import { ChapterPreviewForm } from "./_components/chapter-preview-form";
+import { ChapterVideoForm } from "./_components/chapter-video-form";
 
 const ChapterPage = async ({
   params,
@@ -60,6 +62,18 @@ const ChapterPage = async ({
           </div>
           <div className="p-5 bg-slate-200">
             <ChapterDescriptionForm initialData={chapter} />
+          </div>
+          <div className="p-5 bg-slate-200">
+            <ChapterPreviewForm initialData={chapter} />
+          </div>
+        </div>
+        <div className="space-y-4">
+          <div className="flex items-center gap-x-2">
+            <IconBadge icon={Video} />
+            <h2 className="font-[500]">Video option</h2>
+          </div>
+          <div className="p-5 bg-slate-200">
+            <ChapterVideoForm initialData={chapter} />
           </div>
         </div>
       </div>

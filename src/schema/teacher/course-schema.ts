@@ -66,5 +66,6 @@ export const ChapterSchema = z.object({
     .boolean({
       message: "Make it free or paid",
     })
+    .default(false)
     .optional(),
 });

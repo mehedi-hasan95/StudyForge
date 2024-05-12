@@ -1,5 +1,6 @@
 "use server";
 
+import Mux from "@mux/mux-node";
 import { CurrentUser, CurrentUserRole } from "@/lib/current-user";
 import { db } from "@/lib/prismaDb";
 import {
@@ -86,6 +87,10 @@ export const CreateChapterUpdateAction = async (
 };
 
 // Update chapter
+const { video } = new Mux({
+  tokenId: process.env["MUX_TOKEN_ID"], // This is the default and can be omitted
+  tokenSecret: process.env["MUX_TOKEN_SECRET"], // This is the default and can be omitted
+});
 export const UpdateChapterUpdateAction = async (
   values: z.infer<typeof ChapterSchema>,
   id: string,
@@ -115,6 +120,37 @@ export const UpdateChapterUpdateAction = async (
         ...values,
       },
     });
+
+    if (values.videoUrl) {
+      const existingMuxData = await db.muxData.findFirst({
+        where: {
+          chapterId: id,
+        },
+      });
+      if (existingMuxData) {
+        await video.assets.delete(existingMuxData.assetId);
+        await db.muxData.delete({
+          where: {
+            id: existingMuxData.id,
+          },
+        });
+      }
+      // Create Video for mux
+      const asset = await video.assets.create({
+        input: values.videoUrl as any,
+        playback_policy: "public" as any,
+        test: false,
+      });
+      // Create mux data to save db
+      await db.muxData.create({
+        data: {
+          chapterId: id,
+          assetId: asset.id,
+          playbackId: asset.playback_ids?.[0]?.id as string,
+        },
+      });
+    }
+
     return { success: "Chapter update successfully" };
   } catch (error) {
     return { error: "Something went wrong" };
