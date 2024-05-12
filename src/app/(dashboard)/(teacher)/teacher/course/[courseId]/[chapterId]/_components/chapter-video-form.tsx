@@ -63,7 +63,7 @@ export const ChapterVideoForm = ({ initialData }: Props) => {
           {!isEditing && initialData?.videoUrl && (
             <>
               <Pencil className="mr-2 h-4 w-4" />
-              Edit Image
+              Edit Video
             </>
           )}
           {!isEditing && !initialData?.videoUrl && (

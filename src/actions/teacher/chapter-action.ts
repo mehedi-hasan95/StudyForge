@@ -156,3 +156,76 @@ export const UpdateChapterUpdateAction = async (
     return { error: "Something went wrong" };
   }
 };
+
+// Delete chapter
+export const DeleteChapterUpdateAction = async (
+  // id: string,
+  courseId: string,
+  chapterId: string
+) => {
+  try {
+    const currentUser = await CurrentUser();
+    const userRole = await CurrentUserRole();
+    if (userRole !== "TEACHER") {
+      return { error: "Unauthorize user" };
+    }
+    const ownerCourse = await db.course.findUnique({
+      where: {
+        id: courseId,
+        userId: currentUser?.id,
+      },
+    });
+    if (!ownerCourse) {
+      return { error: "Unauthorize user 2" };
+    }
+    const chapter = await db.chapter.findUnique({
+      where: {
+        id: chapterId,
+        courseId,
+      },
+    });
+
+    if (chapter?.videoUrl) {
+      const existingMuxData = await db.muxData.findFirst({
+        where: {
+          chapterId,
+        },
+      });
+      if (existingMuxData) {
+        await video.assets.delete(existingMuxData.assetId);
+        await db.muxData.delete({
+          where: {
+            id: existingMuxData.id,
+          },
+        });
+      }
+    }
+    await db.chapter.delete({
+      where: {
+        id: chapterId,
+      },
+    });
+
+    // Check any chapter is Publish. If no chapter in publish then course will be unpublish
+    const publishedCapterInCourse = await db.chapter.findMany({
+      where: {
+        courseId,
+        isPublished: true,
+      },
+    });
+    if (!publishedCapterInCourse.length) {
+      await db.course.update({
+        where: {
+          id: courseId,
+        },
+        data: {
+          isPublished: false,
+        },
+      });
+    }
+
+    return { success: "Chapter Delete successfully" };
+  } catch (error) {
+    return { error: "Something went wrong" };
+  }
+};

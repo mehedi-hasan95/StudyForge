@@ -64,7 +64,7 @@ export const ChapterDescriptionForm = ({ initialData }: Props) => {
       <div className="flex justify-between items-center pb-2">
         <div className="flex items-center gap-x-2">
           <IconBadge icon={BookOpen} size={"sm"} />{" "}
-          <h4 className="text-md font-semibold">Chapter Title</h4>
+          <h4 className="text-md font-semibold">Chapter Description</h4>
         </div>
         <Button onClick={toggleEdit} variant={"ghost"}>
           {isEditing ? (
@@ -72,7 +72,7 @@ export const ChapterDescriptionForm = ({ initialData }: Props) => {
           ) : (
             <>
               <Pencil className="mr-2 h-4 w-4" />
-              Edit Title
+              Edit Description
             </>
           )}
         </Button>
