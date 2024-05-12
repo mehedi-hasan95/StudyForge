@@ -159,7 +159,6 @@ export const UpdateChapterUpdateAction = async (
 
 // Delete chapter
 export const DeleteChapterUpdateAction = async (
-  // id: string,
   courseId: string,
   chapterId: string
 ) => {
@@ -225,6 +224,127 @@ export const DeleteChapterUpdateAction = async (
     }
 
     return { success: "Chapter Delete successfully" };
+  } catch (error) {
+    return { error: "Something went wrong" };
+  }
+};
+
+// Chapter Publish
+export const PublishChapterUpdateAction = async (
+  courseId: string,
+  chapterId: string
+) => {
+  try {
+    const currentUser = await CurrentUser();
+    const userRole = await CurrentUserRole();
+    if (userRole !== "TEACHER") {
+      return { error: "Unauthorize user" };
+    }
+    const ownerCourse = await db.course.findUnique({
+      where: {
+        id: courseId,
+        userId: currentUser?.id,
+      },
+    });
+    if (!ownerCourse) {
+      return { error: "Unauthorize user 2" };
+    }
+    const chapter = await db.chapter.findUnique({
+      where: {
+        id: chapterId,
+        courseId,
+      },
+    });
+
+    const muxData = await db.muxData.findUnique({
+      where: {
+        chapterId,
+      },
+    });
+
+    // Check the required field
+    if (
+      !chapter ||
+      !chapter.description ||
+      !chapter.title ||
+      !chapter.videoUrl ||
+      !muxData
+    ) {
+      return { error: "Required field is missing" };
+    }
+
+    await db.chapter.update({
+      where: {
+        id: chapterId,
+        courseId,
+      },
+      data: {
+        isPublished: true,
+      },
+    });
+
+    return { success: "Chapter Publish successfully" };
+  } catch (error) {
+    return { error: "Something went wrong" };
+  }
+};
+
+// Unpublish Publish
+export const UnpublishChapterUpdateAction = async (
+  courseId: string,
+  chapterId: string
+) => {
+  try {
+    const currentUser = await CurrentUser();
+    const userRole = await CurrentUserRole();
+    if (userRole !== "TEACHER") {
+      return { error: "Unauthorize user" };
+    }
+    const ownerCourse = await db.course.findUnique({
+      where: {
+        id: courseId,
+        userId: currentUser?.id,
+      },
+    });
+    if (!ownerCourse) {
+      return { error: "Unauthorize user" };
+    }
+    const chapter = await db.chapter.findUnique({
+      where: {
+        id: chapterId,
+        courseId,
+      },
+    });
+
+    if (!chapter) return { error: "Unauthorize user" };
+    await db.chapter.update({
+      where: {
+        id: chapterId,
+        courseId,
+      },
+      data: {
+        isPublished: false,
+      },
+    });
+
+    const publishChapterInCourse = await db.chapter.findMany({
+      where: {
+        courseId,
+        isPublished: true,
+      },
+    });
+    if (!publishChapterInCourse.length) {
+      await db.course.update({
+        where: {
+          id: courseId,
+          userId: currentUser?.id,
+        },
+        data: {
+          isPublished: false,
+        },
+      });
+    }
+    return { success: "Chapter Unpublish successfully" };
   } catch (error) {
     return { error: "Something went wrong" };
   }
