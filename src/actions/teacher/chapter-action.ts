@@ -4,6 +4,7 @@ import Mux from "@mux/mux-node";
 import { CurrentUser, CurrentUserRole } from "@/lib/current-user";
 import { db } from "@/lib/prismaDb";
 import {
+  ChapterAttachmentSchema,
   ChapterSchema,
   CourseChapterSchema,
 } from "@/schema/teacher/course-schema";
@@ -345,6 +346,73 @@ export const UnpublishChapterUpdateAction = async (
       });
     }
     return { success: "Chapter Unpublish successfully" };
+  } catch (error) {
+    return { error: "Something went wrong" };
+  }
+};
+
+// Chapter Attachment
+export const ChapterAttachmentAction = async (
+  values: z.infer<typeof ChapterAttachmentSchema>,
+  chapterId: string
+) => {
+  try {
+    const userRole = await CurrentUserRole();
+    if (userRole !== "TEACHER") {
+      return { error: "Unauthorize user" };
+    }
+    const validateFields = ChapterAttachmentSchema.safeParse(values);
+    if (!validateFields.success) {
+      return { error: "Something went wrong" };
+    }
+
+    const owner = await db.chapter.findUnique({
+      where: {
+        id: chapterId,
+      },
+    });
+    if (!owner) {
+      return { error: "Unauthorize User" };
+    }
+    const { url } = validateFields.data;
+    await db.chapterAttachment.create({
+      data: {
+        url,
+        chapterId,
+        title: url.split("/").pop() as string,
+      },
+    });
+    return { success: "Chapter Attached Successfully" };
+  } catch (error) {
+    return { error: "Something went wrong" };
+  }
+};
+
+// Chapter Delete Action
+
+export const ChapterAttachmentDeleteAction = async (
+  chapterId: string,
+  attachmentId: string
+) => {
+  try {
+    const userRole = await CurrentUserRole();
+    if (userRole !== "TEACHER") {
+      return { error: "Unauthorize user" };
+    }
+    const owner = await db.chapter.findUnique({
+      where: {
+        id: chapterId,
+      },
+    });
+    if (!owner) {
+      return { error: "Unauthorize User" };
+    }
+    await db.chapterAttachment.delete({
+      where: {
+        id: attachmentId,
+      },
+    });
+    return { success: "Chapter Attachment Delete Successfully" };
   } catch (error) {
     return { error: "Something went wrong" };
   }

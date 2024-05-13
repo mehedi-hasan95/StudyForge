@@ -69,3 +69,10 @@ export const ChapterSchema = z.object({
     .default(false)
     .optional(),
 });
+
+// Chapter Attachments schema
+export const ChapterAttachmentSchema = z.object({
+  url: z.string({
+    message: "Chapter Attachemt is required",
+  }),
+});

@@ -3,24 +3,21 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { File, Loader2, Paperclip, Pencil, X } from "lucide-react";
 import { useState, useTransition } from "react";
-import {
-  CourseAttachmentSchema,
-  CourseSchema,
-} from "@/schema/teacher/course-schema";
+import { ChapterAttachmentSchema } from "@/schema/teacher/course-schema";
 import { useRouter } from "next/navigation";
-import {
-  CourseAttachmentAction,
-  CourseAttachmentDeleteAction,
-} from "@/actions/teacher/course-action";
 import { toast } from "sonner";
 import { IconBadge } from "@/components/custom/icon-badge";
-import { Attachment, Course } from "@prisma/client";
+import { Chapter, ChapterAttachment } from "@prisma/client";
 import { FileUpload } from "@/lib/file-upload";
+import {
+  ChapterAttachmentAction,
+  ChapterAttachmentDeleteAction,
+} from "@/actions/teacher/chapter-action";
 
 interface Props {
-  initialData: Course & { attachment: Attachment[] };
+  initialData: Chapter & { chapterAttachment: ChapterAttachment[] };
 }
-export const CourseAttachmentsForm = ({ initialData }: Props) => {
+export const ChapterAttachmentsForm = ({ initialData }: Props) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
@@ -28,13 +25,13 @@ export const CourseAttachmentsForm = ({ initialData }: Props) => {
   const toggleEdit = () => setIsEditing((current) => !current);
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof CourseAttachmentSchema>) {
+  function onSubmit(values: z.infer<typeof ChapterAttachmentSchema>) {
     startTransition(() => {
-      CourseAttachmentAction(values, initialData.id).then((data) => {
+      ChapterAttachmentAction(values, initialData.id).then((data) => {
         if (data.success) {
           router.refresh();
           setIsEditing(false);
-          toast.success("Course Attachment Updated");
+          toast.success(data.success);
         } else {
           toast.error(data.error);
         }
@@ -44,7 +41,7 @@ export const CourseAttachmentsForm = ({ initialData }: Props) => {
 
   const attachmentDelete = (id: string) => {
     startTransition(() => {
-      CourseAttachmentDeleteAction(initialData.id, id).then((data) => {
+      ChapterAttachmentDeleteAction(initialData.id, id).then((data) => {
         if (data.success) {
           setIsDeleting(id);
           toast.success(data.success);
@@ -61,7 +58,7 @@ export const CourseAttachmentsForm = ({ initialData }: Props) => {
       <div className="flex justify-between items-center pb-2">
         <div className="flex items-center gap-x-2">
           <IconBadge icon={Paperclip} size={"sm"} />{" "}
-          <h4 className="text-md font-semibold">Course Attachments</h4>
+          <h4 className="text-md font-semibold">Chapter Attachments</h4>
         </div>
         <Button onClick={toggleEdit} variant={"ghost"}>
           {isEditing ? (
@@ -74,12 +71,12 @@ export const CourseAttachmentsForm = ({ initialData }: Props) => {
           )}
         </Button>
       </div>
-      {!isEditing && !initialData?.attachment?.length && (
+      {!isEditing && !initialData?.chapterAttachment?.length && (
         <p className="text-slate-500 text-sm italic">No Attachments</p>
       )}
-      {!isEditing && initialData?.attachment?.length > 0 && (
+      {!isEditing && initialData?.chapterAttachment?.length > 0 && (
         <div className="space-y-2">
-          {initialData?.attachment.map((item) => (
+          {initialData?.chapterAttachment.map((item) => (
             <div
               key={item.id}
               className="flex gap-2 items-center text-sky-700 font-[500] border border-sky-400 p-2 rounded-md"

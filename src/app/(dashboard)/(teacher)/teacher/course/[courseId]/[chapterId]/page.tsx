@@ -9,6 +9,7 @@ import { ChapterPreviewForm } from "./_components/chapter-preview-form";
 import { ChapterVideoForm } from "./_components/chapter-video-form";
 import { Banner } from "@/components/custom/banner";
 import { ChapterPublish } from "./chapter-publish";
+import { ChapterAttachmentsForm } from "./_components/chapter-attachments-form";
 
 const ChapterPage = async ({
   params,
@@ -36,6 +37,7 @@ const ChapterPage = async ({
     },
     include: {
       muxData: true,
+      chapterAttachment: true,
     },
   });
   if (!chapter) {
@@ -89,6 +91,9 @@ const ChapterPage = async ({
             </div>
             <div className="p-5 bg-slate-200">
               <ChapterPreviewForm initialData={chapter} />
+            </div>
+            <div className="p-5 bg-slate-200">
+              <ChapterAttachmentsForm initialData={chapter} />
             </div>
           </div>
           <div className="space-y-4">

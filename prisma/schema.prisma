@@ -120,10 +120,23 @@ model Chapter {
   muxData     MuxData?
   userProgres UserProgres[]
 
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  chapterAttachment ChapterAttachment[]
+
+  @@index([courseId])
+}
+
+model ChapterAttachment {
+  id        String   @id @default(uuid())
+  title     String
+  url       String
+  chapterId String
+  chapter   Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([courseId])
+  @@index([chapterId])
 }
 
 model MuxData {
