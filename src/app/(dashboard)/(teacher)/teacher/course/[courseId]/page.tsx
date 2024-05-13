@@ -10,6 +10,8 @@ import { CourseCategoryForm } from "./_components/course-category-form";
 import { CoursePriceForm } from "./_components/course-price-form";
 import { CourseAttachmentsForm } from "./_components/course-attachments-form";
 import { CourseChapterForm } from "./_components/course-chapter-form";
+import { CoursePublish } from "./course-publish";
+import { Banner } from "@/components/custom/banner";
 
 const CourseId = async ({ params }: { params: { courseId: string } }) => {
   const currentUser = await CurrentUser();
@@ -52,14 +54,34 @@ const CourseId = async ({ params }: { params: { courseId: string } }) => {
   const totalFields = requiredFields.length;
   const compleatedFields = requiredFields.filter(Boolean).length;
   const compleatedNumber = `(${compleatedFields}/${totalFields})`;
+  const isCompleate = requiredFields.every(Boolean);
 
   return (
     <div>
-      <div className="flex flex-col gap-y-2">
-        <h2 className="text-2xl font-medium">Course Setup</h2>
-        <p className="text-sm text-foreground">
-          Complete Filed {compleatedNumber}
-        </p>
+      {!course.isPublished && (
+        <Banner
+          label="This course is unpublish. User can't watch this"
+          variant={"warning"}
+        />
+      )}
+      {course.isPublished && (
+        <Banner
+          label="This course is publish. User can watch this"
+          variant={"success"}
+        />
+      )}
+      <div className="flex justify-between pt-4">
+        <div className="flex flex-col gap-y-2">
+          <h2 className="text-2xl font-medium">Course Setup</h2>
+          <p className="text-sm text-foreground">
+            Complete Filed {compleatedNumber}
+          </p>
+        </div>
+        <CoursePublish
+          courseId={course.id}
+          disabled={!isCompleate}
+          isPublished={course.isPublished}
+        />
       </div>
       <div className="grid md:grid-cols-2 pt-16 gap-5">
         <div className="space-y-4">
