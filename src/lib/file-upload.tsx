@@ -7,8 +7,9 @@ import { toast } from "sonner";
 interface Props {
   onChange: (url?: string) => void;
   endPoint: keyof typeof ourFileRouter;
+  values?: any;
 }
-export const FileUpload = ({ endPoint, onChange }: Props) => {
+export const FileUpload = ({ endPoint, onChange, values }: Props) => {
   return (
     <UploadDropzone
       endpoint={endPoint}

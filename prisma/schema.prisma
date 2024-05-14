@@ -37,6 +37,7 @@ model Account {
 enum userRole {
   USER
   TEACHER
+  ADMIN
 }
 
 model User {
@@ -70,6 +71,7 @@ model PasswordResetToken {
 
 model Category {
   id        String   @id @default(uuid())
+  catImage  String?
   title     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

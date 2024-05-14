@@ -1,5 +1,5 @@
 "use client";
-import { LogOut, Settings, User2 } from "lucide-react";
+import { LogOut, Settings, User, User2 } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useCurrentUser } from "@/hooks/use-current-user";
+import { useCurrentUser, useCurrentUserRole } from "@/hooks/use-current-user";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { LoginButton } from "../auth/login-button";
@@ -19,6 +19,7 @@ import { Button } from "../ui/button";
 
 export const UserInfo = () => {
   const currentUser = useCurrentUser();
+  const userRole = useCurrentUserRole();
   return (
     <>
       {currentUser ? (
@@ -35,12 +36,20 @@ export const UserInfo = () => {
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <Link href="/dashboard/settings">
+              <Link href="/settings">
                 <DropdownMenuItem className="cursor-pointer">
                   <Settings className="mr-2 h-4 w-4" />
                   <span>Settings</span>
                 </DropdownMenuItem>
               </Link>
+              {userRole === "ADMIN" && (
+                <Link href="/admin">
+                  <DropdownMenuItem className="cursor-pointer">
+                    <User className="mr-2 h-4 w-4" />
+                    <span>Admin</span>
+                  </DropdownMenuItem>
+                </Link>
+              )}
               <DropdownMenuItem
                 className="cursor-pointer"
                 onClick={() => signOut()}
