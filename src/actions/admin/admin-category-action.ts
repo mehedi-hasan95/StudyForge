@@ -2,6 +2,7 @@
 import { CurrentUserRole } from "@/lib/current-user";
 import { db } from "@/lib/prismaDb";
 import { AdminCategorySchema } from "@/schema/admin/admin-schema";
+import { revalidatePath } from "next/cache";
 import * as z from "zod";
 
 export const AdminCategoryAction = async (
@@ -15,6 +16,7 @@ export const AdminCategoryAction = async (
     await db.category.create({
       data: values,
     });
+    revalidatePath("/category");
     return { success: "Category Created Successfully" };
   } catch (error) {
     return { error: "Something went wrong" };
@@ -59,4 +61,14 @@ export const DeleteCategoryAction = async (id: string) => {
   } catch (error) {
     return { error: "Something went wrong" };
   }
+};
+
+// Fetch all category
+export const AllCategory = async () => {
+  const data = await db.category.findMany({
+    orderBy: {
+      title: "asc",
+    },
+  });
+  return data;
 };
