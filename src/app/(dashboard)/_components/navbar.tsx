@@ -6,7 +6,7 @@ import { SearchInput } from "@/components/custom/search-input";
 
 export const NavBar = () => {
   const pathName = usePathname();
-  const isSearchPage = pathName === "/search";
+  const isSearchPage = pathName === "/courses";
   return (
     <div className="p-4 border-b h-full flex items-center bg-white shadow-sm">
       <MobileSitebar />

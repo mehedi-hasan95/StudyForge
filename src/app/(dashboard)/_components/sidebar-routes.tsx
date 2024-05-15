@@ -18,8 +18,8 @@ const menus = [
   },
   {
     icon: Compass,
-    label: "Brouse",
-    href: "/search",
+    label: "Courses",
+    href: "/courses",
   },
 ];
 
