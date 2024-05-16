@@ -25,7 +25,7 @@ export const CourseCard = ({
   title,
 }: Props) => {
   return (
-    <Link href={`/courses/${id}`} className="border rounded-md">
+    <Link href={`/course/${id}`} className="border rounded-md">
       <div className="p-2">
         <Image src={imageUrl} alt={title} height={500} width={500} />
         <div className="py-2">

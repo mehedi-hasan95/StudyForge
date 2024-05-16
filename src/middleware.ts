@@ -7,11 +7,14 @@ import {
   apiUploadthingPrefix,
   authRoutes,
   apiAuthPrefix,
+  courseRoute,
   DEFAULT_LOGIN_REDIRECT,
 } from "@/routes";
+import { CurrentUserRole } from "./lib/current-user";
 
 //@ts-ignore
-export default auth((req) => {
+export default auth(async (req) => {
+  const userRole = await CurrentUserRole();
   const { nextUrl } = req;
   const isLogIn = !!req.auth;
 
@@ -20,6 +23,26 @@ export default auth((req) => {
     nextUrl.pathname.startsWith(apiUploadthingPrefix);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+  const isCourseRoute = courseRoute.includes(nextUrl.pathname);
+
+  // access controll for teacher
+  const isTeacherRoute = nextUrl.pathname.startsWith("/teacher");
+  const isAnalyticsRoute = nextUrl.pathname.startsWith("/analytics");
+  if (isTeacherRoute || isAnalyticsRoute) {
+    if (userRole !== "TEACHER") {
+      return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+    }
+    return null;
+  }
+  // access controll for admin
+  const isAdminRoute = nextUrl.pathname.startsWith("/admin");
+  const isCategoryRoute = nextUrl.pathname.startsWith("/category");
+  if (isAdminRoute || isCategoryRoute) {
+    if (userRole !== "ADMIN") {
+      return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+    }
+    return null;
+  }
 
   //   User allow to login or register API access
   if (isApiAuthRoute) {
@@ -29,6 +52,10 @@ export default auth((req) => {
   //   User allow to login or register API access
   if (isApiUploadthingRoute) {
     return null;
+  }
+  //   Course Redirect
+  if (isCourseRoute) {
+    return Response.redirect(new URL("/courses", nextUrl));
   }
 
   //   User allow to login or register page. If login redirect to default page

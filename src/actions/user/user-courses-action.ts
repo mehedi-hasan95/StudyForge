@@ -25,6 +25,7 @@ export const UserCoursesAction = async ({
         isPublished: true,
         title: {
           contains: title,
+          mode: "insensitive",
         },
         categoryId,
       },
