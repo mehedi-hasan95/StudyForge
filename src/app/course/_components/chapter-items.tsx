@@ -29,14 +29,14 @@ export const ChapterItems = ({
     <button
       onClick={onClick}
       className={cn(
-        "flex items-center gap-x-2 text-slate-500 text-sm font-[500] pl-6 transition-all hover:text-slate-600 hover:bg-slate-300/20 py-3",
+        "flex items-center gap-x-2 text-slate-500 text-sm font-[500] pl-6 transition-all hover:text-slate-600 hover:bg-slate-300/20",
         isActive &&
           "text-slate-700 bg-slate-200/20 hover:bg-slate-200/20 hover:text-slate-700",
         isCompleted && "text-emerald-700 hover:text-emerald-700",
         isCompleted && isActive && "bg-emerald-200/20"
       )}
     >
-      <div className="flex gap-2 items-center">
+      <div className="flex gap-2 items-center py-4">
         <Icon
           size={22}
           className={cn(

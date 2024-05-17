@@ -7,14 +7,15 @@ type CourseProgressProps = Course & {
   progress: number | null;
 };
 interface Props {
-  courses: CourseProgressProps[];
+  courses: Promise<CourseProgressProps[]>;
 }
 
 export const CourseList = async ({ courses }: Props) => {
+  const data = await courses;
   return (
     <div>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-5">
-        {courses.map((course) => (
+        {data.map((course) => (
           <CourseCard
             key={course.id}
             id={course.id}
@@ -27,7 +28,7 @@ export const CourseList = async ({ courses }: Props) => {
           />
         ))}
       </div>
-      {courses.length === 0 && (
+      {data.length === 0 && (
         <p className="text-center text-md text-muted-foreground mt-20">
           No Course found
         </p>

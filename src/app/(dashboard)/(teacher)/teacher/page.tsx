@@ -24,7 +24,7 @@ const TeacherPage = async () => {
   const formatCourse = data.map((course) => ({
     id: course.id,
     title: course.title,
-    price: course.price,
+    price: course.price!,
     isPublished: course.isPublished,
     createdAt: format(course.createdAt, "MMMM do, yyyy"),
   }));
@@ -40,7 +40,7 @@ const TeacherPage = async () => {
         </Link>
       </div>
       <Separator className="my-4" />
-      <CourseData data={formatCourse as any} />
+      <CourseData data={formatCourse} />
     </div>
   );
 };

@@ -5,6 +5,8 @@ import { CurrentUser } from "@/lib/current-user";
 import { redirect } from "next/navigation";
 import { CourseList } from "./_components/course-list";
 import { UserCoursesAction } from "@/actions/user/user-courses-action";
+import { Suspense } from "react";
+import LoadingAnimation from "@/components/custom/loading-animation";
 
 interface Props {
   searchParams: {
@@ -18,7 +20,7 @@ const SearchPage = async ({ searchParams }: Props) => {
     return redirect("/");
   }
   const category = await AllCategory();
-  const courses = await UserCoursesAction({ ...searchParams });
+  const courses = UserCoursesAction({ ...searchParams });
 
   return (
     <div>
@@ -30,7 +32,9 @@ const SearchPage = async ({ searchParams }: Props) => {
           <CategoryItems key={item.id} category={item} />
         ))}
       </div>
-      <CourseList courses={courses} />
+      <Suspense fallback={<LoadingAnimation />}>
+        <CourseList courses={courses} />
+      </Suspense>
     </div>
   );
 };
