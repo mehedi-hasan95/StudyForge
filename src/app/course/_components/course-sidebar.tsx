@@ -2,6 +2,7 @@ import { CurrentUser } from "@/lib/current-user";
 import { db } from "@/lib/prismaDb";
 import { Chapter, Course, UserProgres } from "@prisma/client";
 import { ChapterItems } from "./chapter-items";
+import { CourseProgress } from "@/components/custom/course-progress";
 
 interface Props {
   course: Course & {
@@ -25,7 +26,11 @@ export const CourseSidebar = async ({ course, progressCount }: Props) => {
     <div className="h-full border-r flex flex-col overflow-y-auto shadow-sm md:pt-24">
       <div className="flex flex-col border-b px-8 py-[22px]">
         <h1 className="font-semibold text-lg">{course.title}</h1>
-        {/* Todo: User progress */}
+        {purchase && (
+          <div className="pt-8">
+            <CourseProgress variant={"success"} value={progressCount} />
+          </div>
+        )}
       </div>
       <div className="flex flex-col w-full">
         {course.chapter.map((chapter) => (

@@ -6,11 +6,11 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 interface Props {
-  couresId: string;
+  courseId: string;
   price: number;
 }
-export const CoursePurchase = ({ couresId, price }: Props) => {
-  // console.log(couresId);
+export const CoursePurchase = ({ courseId, price }: Props) => {
+  // console.log(courseId);
   const [isLoading, setIsLoading] = useState(false);
 
   const onClick = async () => {
@@ -21,7 +21,7 @@ export const CoursePurchase = ({ couresId, price }: Props) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ couresId }),
+        body: JSON.stringify({ courseId }),
       });
 
       const result = await response.json();

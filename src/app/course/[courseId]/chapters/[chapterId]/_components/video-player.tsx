@@ -1,8 +1,11 @@
 "use client";
+import { useConfettiStore } from "@/hooks/use-confetti-store";
 import { cn } from "@/lib/utils";
 import MuxPlayer from "@mux/mux-player-react";
 import { Loader2, Lock } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 interface Props {
   chapterId: string;
@@ -23,6 +26,45 @@ export const VideoPlayer = ({
   completeOnEnd,
 }: Props) => {
   const [isReady, setIsReady] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const confetti = useConfettiStore();
+
+  const onEnd = async () => {
+    try {
+      if (completeOnEnd) {
+        setIsLoading(true);
+        const response = await fetch("/api/progress", {
+          method: "PUT", // or 'PUT'
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            courseId,
+            chapterId,
+            isCompleted: true,
+          }),
+        });
+
+        const result = await response.json();
+        if (result) {
+          if (!nextChapterId) {
+            confetti.onOpen();
+          }
+
+          if (nextChapterId) {
+            router.push(`/course/${courseId}/chapters/${nextChapterId}`);
+          }
+          toast.success("Progress updated");
+          router.refresh();
+        }
+      }
+    } catch (error) {
+      toast.error("Something went worng");
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <div className="relative aspect-video">
       {!isReady && !isLocked && (
@@ -41,7 +83,7 @@ export const VideoPlayer = ({
           title={title}
           className={cn(!isReady && "hidden")}
           onCanPlay={() => setIsReady(true)}
-          onEnded={() => {}}
+          onEnded={onEnd}
           autoPlay
           playbackId={playbackId}
         />

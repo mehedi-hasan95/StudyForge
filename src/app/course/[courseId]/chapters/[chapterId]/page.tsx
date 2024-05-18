@@ -3,6 +3,7 @@ import { Banner } from "@/components/custom/banner";
 import { redirect } from "next/navigation";
 import { VideoPlayer } from "./_components/video-player";
 import { CoursePurchase } from "./_components/course-purchase";
+import { CourseProgressButton } from "./_components/course-progress-button";
 
 const ChapterId = async ({
   params,
@@ -37,26 +38,33 @@ const ChapterId = async ({
           variant={"warning"}
         />
       )}
-      <div className="flex flex-col max-w-4xl mx-auto pb-20">
-        <div className="p-4">
-          <VideoPlayer
-            chapterId={params.chapterId}
-            title={chapter.title}
-            courseId={params.courseId}
-            nextChapterId={nextChapter?.id}
-            playbackId={muxData?.playbackId!}
-            isLocked={isLocked}
-            completeOnEnd={completeOnEnd}
-          />
+      <div className="max-w-screen-xl mx-auto">
+        <div className="flex flex-col max-w-4xl mx-auto pb-20">
+          <div className="p-4">
+            <VideoPlayer
+              chapterId={params.chapterId}
+              title={chapter.title}
+              courseId={params.courseId}
+              nextChapterId={nextChapter?.id}
+              playbackId={muxData?.playbackId!}
+              isLocked={isLocked}
+              completeOnEnd={completeOnEnd}
+            />
+          </div>
         </div>
       </div>
       <div className="flex flex-col md:flex-row justify-between items-center gap-3">
         <h2 className="text-lg font-bold">{chapter.title}</h2>
 
         {purchase ? (
-          <div>Todo: Progress</div>
+          <CourseProgressButton
+            chapterId={params.chapterId}
+            courseId={params.courseId}
+            nextChapterId={nextChapter?.id}
+            isCompleted={!!userProgres?.isCompleted}
+          />
         ) : (
-          <CoursePurchase couresId={params.courseId} price={course.price!} />
+          <CoursePurchase courseId={params.courseId} price={course.price!} />
         )}
       </div>
     </div>

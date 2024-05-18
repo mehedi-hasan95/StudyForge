@@ -8,13 +8,13 @@ export async function POST(req: NextRequest) {
   try {
     const currentUser = await CurrentUser();
     const userId = currentUser?.id as string;
-    const { couresId } = await req.json();
+    const { courseId } = await req.json();
     if (!currentUser) {
       return new NextResponse("Unauthorize User", { status: 401 });
     }
     const course = await db.course.findUnique({
       where: {
-        id: couresId,
+        id: courseId,
         isPublished: true,
       },
     });
@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
       where: {
         userId_courseId: {
           userId,
-          courseId: couresId,
+          courseId,
         },
       },
     });
@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
       success_url: `${process.env.NEXT_PUBLIC_APP_URL}/course/${course.id}?success=1`,
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/course/${course.id}?cancel=1`,
       metadata: {
-        couresId,
+        courseId,
         userId,
       },
     });

@@ -20,7 +20,7 @@ export async function POST(req: Request) {
 
   const session = event.data.object as Stripe.Checkout.Session;
   const userId = session?.metadata?.userId;
-  const courseId = session?.metadata?.couresId;
+  const courseId = session?.metadata?.courseId;
 
   if (event.type === "checkout.session.completed") {
     if (!userId || !courseId) {
@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     }
     await db.purchase.create({
       data: {
-        courseId: courseId,
+        courseId,
         userId,
       },
     });
