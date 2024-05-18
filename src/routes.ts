@@ -21,6 +21,7 @@ export const courseRoute = ["/course"];
  */
 export const apiAuthPrefix = "/api/auth";
 export const apiUploadthingPrefix = "/api/uploadthing";
+export const apiStripegPrefix = "/api/webhook";
 
 /**
  * The default redirect path after logging in

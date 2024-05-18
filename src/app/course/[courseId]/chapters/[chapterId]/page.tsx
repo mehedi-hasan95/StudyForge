@@ -2,6 +2,7 @@ import { UserChapterAction } from "@/actions/user/user-chapter-action";
 import { Banner } from "@/components/custom/banner";
 import { redirect } from "next/navigation";
 import { VideoPlayer } from "./_components/video-player";
+import { CoursePurchase } from "./_components/course-purchase";
 
 const ChapterId = async ({
   params,
@@ -48,6 +49,15 @@ const ChapterId = async ({
             completeOnEnd={completeOnEnd}
           />
         </div>
+      </div>
+      <div className="flex flex-col md:flex-row justify-between items-center gap-3">
+        <h2 className="text-lg font-bold">{chapter.title}</h2>
+
+        {purchase ? (
+          <div>Todo: Progress</div>
+        ) : (
+          <CoursePurchase couresId={params.courseId} price={course.price!} />
+        )}
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ import {
   apiUploadthingPrefix,
   authRoutes,
   apiAuthPrefix,
+  apiStripegPrefix,
   courseRoute,
   DEFAULT_LOGIN_REDIRECT,
 } from "@/routes";
@@ -19,6 +20,7 @@ export default auth(async (req) => {
   const isLogIn = !!req.auth;
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
+  const isApiStripeRoute = nextUrl.pathname.startsWith(apiStripegPrefix);
   const isApiUploadthingRoute =
     nextUrl.pathname.startsWith(apiUploadthingPrefix);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
@@ -46,6 +48,10 @@ export default auth(async (req) => {
 
   //   User allow to login or register API access
   if (isApiAuthRoute) {
+    return null;
+  }
+  //   User allow Stripe API access
+  if (isApiStripeRoute) {
     return null;
   }
 

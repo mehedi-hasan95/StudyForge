@@ -22,7 +22,7 @@ export const CourseSidebar = async ({ course, progressCount }: Props) => {
     },
   });
   return (
-    <div className="h-full border-r flex flex-col overflow-y-auto shadow-sm">
+    <div className="h-full border-r flex flex-col overflow-y-auto shadow-sm md:pt-24">
       <div className="flex flex-col border-b px-8 py-[22px]">
         <h1 className="font-semibold text-lg">{course.title}</h1>
         {/* Todo: User progress */}

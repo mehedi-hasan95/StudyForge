@@ -44,7 +44,7 @@ const CourseLayout = async ({
   const userProgress = await UserProgressAction(course.id);
   return (
     <div className="h-full">
-      <div className="md:pl-72 fixed h-20 inset-y-0 w-full z-50">
+      <div className="h-[80px] fixed inset-y-0 w-full z-[49] bg-white">
         <div className="flex justify-between items-center p-4">
           <div className="md:hidden">
             <MobileCourseSidebar course={course} progressCount={userProgress} />
@@ -54,11 +54,11 @@ const CourseLayout = async ({
         </div>
         <Separator />
       </div>
-      <div className="hidden md:flex flex-col w-72 fixed inset-y-0 z-50">
+      <div className="hidden md:flex flex-col w-72 fixed inset-y-0 z-[48]">
         <CourseSidebar course={course} progressCount={userProgress} />
       </div>
       <main className="md:pl-72 pt-20 h-full">
-        <div className="p-4">{children}</div>
+        <div className="p-4 max-w-screen-xl mx-auto">{children}</div>
       </main>
     </div>
   );
