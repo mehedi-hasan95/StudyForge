@@ -2,6 +2,7 @@
 import {
   Compass,
   DraftingCompass,
+  Home,
   Layout,
   LineChart,
   Split,
@@ -12,14 +13,19 @@ import { useCurrentUserRole } from "@/hooks/use-current-user";
 
 const menus = [
   {
-    icon: Layout,
-    label: "Dashboard",
+    icon: Home,
+    label: "Home",
     href: "/",
   },
   {
     icon: Compass,
     label: "Courses",
     href: "/courses",
+  },
+  {
+    icon: Layout,
+    label: "Dashboard",
+    href: "/dashboard",
   },
 ];
 

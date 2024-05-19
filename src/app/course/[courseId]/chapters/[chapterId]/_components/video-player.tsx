@@ -51,12 +51,12 @@ export const VideoPlayer = ({
           if (!nextChapterId) {
             confetti.onOpen();
           }
+          toast.success("Progress updated");
+          router.refresh();
 
           if (nextChapterId) {
             router.push(`/course/${courseId}/chapters/${nextChapterId}`);
           }
-          toast.success("Progress updated");
-          router.refresh();
         }
       }
     } catch (error) {
