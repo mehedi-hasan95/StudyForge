@@ -29,8 +29,11 @@ import { UpdateProfileSchema } from "@/schema";
 import Link from "next/link";
 import { FormError } from "../form/form-error";
 import { FormSuccess } from "../form/form-success";
+import { FileUpload } from "@/lib/file-upload";
+import Image from "next/image";
 
 export const Settings = () => {
+  const [isImage, setIsImage] = useState<string | undefined>(undefined);
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
   const { update } = useSession();
@@ -129,24 +132,24 @@ export const Settings = () => {
                 />
               </>
             )}
-            {/* <FormField
+            {isImage && <Image src={isImage} alt="" height={120} width={120} />}
+            <FormField
               control={form.control}
               name="image"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Profile Image</FormLabel>
                   <FormControl>
-                    <ImageUpload
-                      value={field.value ? [field.value] : []}
-                      disabled={isPending}
+                    <FileUpload
+                      endPoint="courseImage"
                       onChange={(url) => field.onChange(url)}
-                      onRemove={() => field.onChange("")}
+                      values={setIsImage(field.value)}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
-            /> */}
+            />
             <FormError message={error} />
             <FormSuccess message={success} />
             <Button disabled={isPending} type="submit">
