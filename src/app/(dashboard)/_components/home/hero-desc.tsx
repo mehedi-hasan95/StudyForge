@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export const HeroDesc = () => {
   return (
-    <div className="max-w-screen-xl mx-auto p-6 grid md:grid-cols-2 gap-8 md:gap-16">
+    <div className="max-w-screen-xl mx-auto p-6 grid md:grid-cols-2 gap-8 md:gap-16 py-10 md:py-16 lg:py-20">
       <div className="grid md:grid-cols-2 items-center gap-3">
         <Image
           src="/student1.webp"
@@ -48,7 +48,7 @@ export const HeroDesc = () => {
           <div>
             <div className="flex gap-2 items-center">
               <User className="h-8 w-8" />{" "}
-              <p className="text-lg md:text-xl font-bold">120 Student</p>
+              <p className="text-lg md:text-xl font-bold">120 Students</p>
             </div>
             <p className="py-3">
               Lorem ipsum dolor sit amet consectetur adipisicing elit.

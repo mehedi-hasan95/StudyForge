@@ -1,3 +1,4 @@
+import { Footer } from "@/components/common/footer";
 import { NavBar } from "./_components/navbar";
 import Sidebar from "./_components/sidebar";
 
@@ -10,8 +11,9 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       <div className="hidden md:flex flex-col w-72 fixed inset-y-0 z-[48]">
         <Sidebar />
       </div>
-      <main className="pt-24 md:pl-72">
+      <main className="pt-[80px] md:pl-72">
         <div>{children}</div>
+        <Footer />
       </main>
     </div>
   );

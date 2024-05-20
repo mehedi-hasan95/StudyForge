@@ -6,7 +6,7 @@ const CategoryId = async ({ params }: { params: { catId: string } }) => {
     where: { id: params.catId },
   });
   return (
-    <div>
+    <div className="max-w-screen-xl mx-auto p-4">
       <AdminCategoryForm initialData={category} />
     </div>
   );

@@ -6,7 +6,7 @@ import { CircleCheck, Clock } from "lucide-react";
 const Dashboard = async () => {
   const { completedCourses, coursesInProgress } = await UserDashboardAction();
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 max-w-screen-xl mx-auto p-4">
       <div className="grid md:grid-cols-4 gap-5">
         <InfoCard
           icon={Clock}

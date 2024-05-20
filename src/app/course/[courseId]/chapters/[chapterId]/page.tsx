@@ -25,7 +25,7 @@ const ChapterId = async ({
   const isLocked = !chapter.isFree && !purchase;
   const completeOnEnd = !!purchase && !userProgres?.isCompleted;
   return (
-    <div>
+    <div className="max-w-screen-xl mx-auto p-4">
       {userProgres?.isCompleted && (
         <Banner
           label="You already completed this chapter"

@@ -71,3 +71,32 @@ export const UserCoursesAction = async ({
     return [];
   }
 };
+
+export const RecentCourseAction = async () => {
+  try {
+    const data = await db.course.findMany({
+      where: {
+        isPublished: true,
+      },
+      include: {
+        category: true,
+        _count: {
+          select: {
+            chapter: {
+              where: {
+                isPublished: true,
+              },
+            },
+          },
+        },
+      },
+      take: 6,
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+    return data;
+  } catch (error) {
+    return [];
+  }
+};
