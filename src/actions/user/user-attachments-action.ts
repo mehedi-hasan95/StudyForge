@@ -8,7 +8,6 @@ export const UserAttachmentAndDesc = async (
   try {
     const currentUser = await CurrentUser();
     const userId = currentUser?.id as string;
-    console.log(userId);
     const purchase = await db.purchase.findUnique({
       where: {
         userId_courseId: {

@@ -77,25 +77,29 @@ const ChapterId = async ({
           <CoursePurchase courseId={params.courseId} price={course.price!} />
         )}
       </div>
-      <Separator className="my-5" />
-      {/* Chapter Description  */}
-      <div className="">
-        <h2 className="text-xl font-bold">Chapter Description:</h2>
-        <Preview value={chapterAttachments?.description!} />
-      </div>
-      {/* Chapter Attachments  */}
-      {chapterAttachments?.chapterAttachment?.length !== 0 && (
-        <div>
+      {chapterAttachments !== undefined && (
+        <>
           <Separator className="my-5" />
-          <h2 className="text-xl font-bold pb-4">Chapter Attachments</h2>
-          {chapterAttachments?.chapterAttachment.map((item) => (
-            <div className="flex gap-x-1 items-center" key={item.id}>
-              {" "}
-              <IconBadge icon={File} size={"sm"} />
-              <Link href={item.url}>{item.title}</Link>
+          {/* Chapter Description  */}
+          <div className="">
+            <h2 className="text-xl font-bold">Chapter Description:</h2>
+            <Preview value={chapterAttachments?.description!} />
+          </div>
+          {/* Chapter Attachments  */}
+          {chapterAttachments?.chapterAttachment?.length !== 0 && (
+            <div>
+              <Separator className="my-5" />
+              <h2 className="text-xl font-bold pb-4">Chapter Attachments</h2>
+              {chapterAttachments?.chapterAttachment.map((item) => (
+                <div className="flex gap-x-1 items-center" key={item.id}>
+                  {" "}
+                  <IconBadge icon={File} size={"sm"} />
+                  <Link href={item.url}>{item.title}</Link>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          )}
+        </>
       )}
     </div>
   );
