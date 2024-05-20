@@ -23,7 +23,7 @@ const SearchPage = async ({ searchParams }: Props) => {
   const courses = UserCoursesAction({ ...searchParams });
 
   return (
-    <div>
+    <div className="max-w-screen-xl mx-auto p-4">
       <div className="md:hidden mb-4">
         <SearchInput />
       </div>

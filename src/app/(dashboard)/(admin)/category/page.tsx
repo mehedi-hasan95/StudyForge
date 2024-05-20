@@ -18,7 +18,7 @@ const CategoryPage = async () => {
     createdAt: format(cat.createdAt, "MMMM do, yyyy"),
   }));
   return (
-    <div>
+    <div className="max-w-screen-xl mx-auto p-4">
       <div className="flex justify-between items-center">
         <h2 className="text-xl font-bold">Total Category({category.length})</h2>
         <Link href={"/category/new"}>
