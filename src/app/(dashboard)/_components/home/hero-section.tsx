@@ -2,10 +2,10 @@ import Image from "next/image";
 
 export const HeroSection = () => {
   return (
-    <div className="bg-[#2F2D51] relative">
+    <div className="bg-[#F2F8F1] relative">
       <div className="max-w-screen-xl mx-auto p-6 grid md:grid-cols-2 gap-8 md:gap-16 justify-between items-center py-16 md:py-20 lg:py-28">
         <div className="space-y-4">
-          <h2 className="text-2xl md:text-4xl lg:text-5xl text-white font-bold md:!leading-[4rem]">
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold md:!leading-[4rem]">
             Upgrade your learning Skills & Upgrade your life
           </h2>
           <p className="text-muted-foreground">

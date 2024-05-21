@@ -5,8 +5,8 @@ import { RecentCourse } from "../_components/home/recent-course";
 export default function Home() {
   return (
     <main className="">
-      <HeroSection />
       <HeroDesc />
+      <HeroSection />
       <RecentCourse />
     </main>
   );
