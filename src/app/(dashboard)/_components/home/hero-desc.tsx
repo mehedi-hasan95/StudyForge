@@ -1,8 +1,10 @@
+import { FlipWords } from "@/components/aceternity/flip-words";
 import { LampComponent } from "@/components/aceternity/lamp";
 import { ShieldCheck, Star, User, UserCheck2 } from "lucide-react";
 import Image from "next/image";
 
 export const HeroDesc = () => {
+  const words = ["Disciplines", "Teachers", "Courses"];
   return (
     <div className="">
       <LampComponent />
@@ -24,7 +26,6 @@ export const HeroDesc = () => {
                 loop
               >
                 <source src="/home.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
               </video>
               <Image
                 src="/student2.webp"
@@ -38,9 +39,10 @@ export const HeroDesc = () => {
           <div className="space-y-8">
             <div className="space-y-3">
               <h4 className="font-medium">FLEXIBLE SUPPORTED LEARNING</h4>
-              <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold md:!leading-[3rem]">
-                Expertise Across All Disciplines
-              </h2>
+              <div className="text-4xl font-normal">
+                Expertise Across All
+                <FlipWords className="text-gray-300" words={words} /> <br />
+              </div>
               <p className="text-muted-foreground">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem
                 aliquam sunt ea laudantium aut vitae fugiat optio, asperiores

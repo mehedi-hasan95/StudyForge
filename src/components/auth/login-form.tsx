@@ -52,6 +52,7 @@ export const LoginForm = () => {
       login(values, callbackUrl).then((data) => {
         setError(data?.error);
         setSuccess(data?.success);
+        window.location.reload();
       });
     });
   }
