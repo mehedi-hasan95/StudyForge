@@ -57,7 +57,7 @@ const CourseId = async ({ params }: { params: { courseId: string } }) => {
   const isCompleate = requiredFields.every(Boolean);
 
   return (
-    <div>
+    <div className="max-w-screen-xl mx-auto p-4">
       {!course.isPublished && (
         <Banner
           label="This course is unpublish. User can't watch this"

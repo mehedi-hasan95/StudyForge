@@ -49,7 +49,7 @@ const ChapterPage = async ({
   const compleatedNumber = `(${compleatedFields}/${totalFields})`;
   const isCompleted = requiredFields.every(Boolean);
   return (
-    <>
+    <div className="max-w-screen-xl mx-auto p-4">
       {!chapter.isPublished && (
         <Banner
           label="Chapter is not published. This will visible in course as draft"
@@ -107,7 +107,7 @@ const ChapterPage = async ({
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

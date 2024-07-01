@@ -46,7 +46,7 @@ const CreateCourse = () => {
     });
   }
   return (
-    <div>
+    <div className="max-w-screen-xl mx-auto p-4">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
